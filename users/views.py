@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from rest_framework import generics, status
 
-# Create your views here.
+from users.serializers.users_serializers import UserCreateSerializer
+
+
+class UserCreate(generics.CreateAPIView):
+    serializer_class = UserCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
