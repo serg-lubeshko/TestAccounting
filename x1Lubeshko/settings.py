@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounting.apps.AccountingConfig',
+    'rest_framework',
+    'drf_yasg',
+    'users'
 ]
 
 MIDDLEWARE = [
