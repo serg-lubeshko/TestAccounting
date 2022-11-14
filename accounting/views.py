@@ -1,7 +1,9 @@
 from rest_framework import generics, status
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-from accounting.serializers.category_serializers import CategoryCreateSerializer
+from accounting.models import Category
+from accounting.serializers.category_serializers import CategoryCreateSerializer, CategoryListSerializer
 from x1Lubeshko.settings import REPLY_TEXTS
 
 
@@ -22,3 +24,15 @@ class CategoryCreate(generics.CreateAPIView):
             },
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class CategoryList(generics.ListAPIView):
+    serializer_class = CategoryListSerializer
+
+    def get_queryset(self):
+        try:
+            user = self.request.user
+            queryset = Category.objects.filter(user=user)
+        except:
+            raise NotFound()
+        return queryset
