@@ -18,10 +18,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict):
         passw = validated_data.pop('password')
-        print(validated_data, type(validated_data))
         user = super().create(validated_data)
-        print('=============================')
-        print(passw)
         user.set_password(passw)
         user.save()
         return user
