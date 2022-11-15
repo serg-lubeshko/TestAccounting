@@ -20,3 +20,11 @@ class CategoryListSerializer(serializers.ModelSerializer):
             'category_name',
             'update_date',
         )
+
+
+class CategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = (
+            'category_name',
+        )

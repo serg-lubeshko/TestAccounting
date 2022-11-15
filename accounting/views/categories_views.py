@@ -3,11 +3,15 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
 from accounting.models import Category
-from accounting.serializers.category_serializers import CategoryCreateSerializer, CategoryListSerializer
+from accounting.permission.permissions import IsAnAuthor
+from accounting.serializers.category_serializers import CategoryCreateSerializer, CategoryListSerializer, \
+    CategoryUpdateSerializer
 from x1Lubeshko.settings import REPLY_TEXTS
 
 
 class CategoryCreate(generics.CreateAPIView):
+    """ Пользователь может  создавать свои категории """
+
     serializer_class = CategoryCreateSerializer
 
     def post(self, request, *args, **kwargs):
@@ -27,12 +31,23 @@ class CategoryCreate(generics.CreateAPIView):
 
 
 class CategoryList(generics.ListAPIView):
+    """ Пользователь может олучить список своих категорий """
+
     serializer_class = CategoryListSerializer
 
     def get_queryset(self):
         try:
             user = self.request.user
             queryset = Category.objects.filter(user=user)
-        except:
+        except Exception:
             raise NotFound()
         return queryset
+
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    """ Пользователь может изменять/удалять категории """
+
+    permission_classes = [IsAnAuthor]
+    queryset = Category.objects.all()
+    serializer_class = CategoryUpdateSerializer
+    lookup_url_kwarg = 'category_id'
