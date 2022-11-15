@@ -40,6 +40,23 @@ class Organization(Common):
         return self.organization_name
 
 
+class Card(Common):
+    card_id = models.BigAutoField(primary_key=True, verbose_name="id")
+    card_name = models.CharField(max_length=255, verbose_name="Название организации")
+    beg_balance = models.DecimalField(max_digits=20,
+                                      decimal_places=2,
+                                      verbose_name="Начальный баланс",
+                                      default=0)
+
+    class Meta:
+        db_table = 'card'
+        verbose_name = 'Карта | Card'
+        verbose_name_plural = 'Карты | Card'
+
+    def __str__(self):
+        return self.card_name
+
+
 class Transactions(Common):
     OPERATION_TYPE = [
         (1, 'Доход'),
