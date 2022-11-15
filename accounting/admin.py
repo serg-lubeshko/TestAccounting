@@ -1,3 +1,16 @@
 from django.contrib import admin
 
-# Register your models here.
+from accounting.models import Transactions
+
+
+@admin.register(Transactions)
+class TransactionsAdmin(admin.ModelAdmin):
+    list_display = (
+        'transaction_id',
+        'category',
+        'organization',
+        'info',
+        'operation_type',
+        'user',
+        'update_date'
+    )
