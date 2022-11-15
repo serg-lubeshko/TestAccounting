@@ -42,7 +42,7 @@ class Organization(Common):
 
 class Card(Common):
     card_id = models.BigAutoField(primary_key=True, verbose_name="id")
-    card_name = models.CharField(max_length=255, verbose_name="Название организации")
+    card_name = models.CharField(max_length=255, verbose_name="Название карты")
     beg_balance = models.DecimalField(max_digits=20,
                                       decimal_places=2,
                                       verbose_name="Начальный баланс",
@@ -57,6 +57,24 @@ class Card(Common):
         return self.card_name
 
 
+class CardBalance(models.Model):
+    card_balance_id = models.BigAutoField(primary_key=True, verbose_name="id")
+    card = models.OneToOneField(Card, on_delete=models.CASCADE)
+    update_date = models.DateTimeField(verbose_name='Последние изменения', auto_now=True)
+    sum_cur = models.DecimalField(max_digits=20,
+                                  decimal_places=2,
+                                  verbose_name="Текущий баланс",
+                                  default=0)
+
+    class Meta:
+        db_table = 'card_balance'
+        verbose_name = 'Баланс | CardBalance'
+        verbose_name_plural = 'Балансы | CardBalance'
+
+    def __str__(self):
+        return self.card
+
+
 class Transactions(Common):
     OPERATION_TYPE = [
         (1, 'Доход'),
@@ -69,10 +87,11 @@ class Transactions(Common):
                                            default=0)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Категория")
     organization = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name="Организация")
-    info = models.CharField(max_length=500, verbose_name="Описание")
+    info = models.CharField(max_length=500, verbose_name="Описание", blank=True, null=True)
     operation_type = models.IntegerField(choices=OPERATION_TYPE,
                                          verbose_name='Тип операции',
                                          null=True)
+    card = models.ForeignKey(Card, on_delete=models.PROTECT)
 
     class Meta:
         db_table = 'transaction'

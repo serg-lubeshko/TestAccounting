@@ -11,7 +11,8 @@ class TransactionCreateSerializer(serializers.ModelSerializer):
             'category',
             'organization',
             'info',
-            'operation_type'
+            'operation_type',
+            'card'
         )
 
     def validate(self, attrs):
@@ -26,6 +27,7 @@ class TransactionCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict):
         user = self.context['user']
         operation_type = validated_data.get('operation_type', None)
+        print(operation_type, '!!!!')
         if operation_type == 2:
             validated_data['transaction_summ'] = validated_data['transaction_summ'] * (-1)
         return Transactions.objects.create(**validated_data | {'user': user})
