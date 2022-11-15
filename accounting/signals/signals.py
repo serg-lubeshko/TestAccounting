@@ -1,5 +1,5 @@
 from django.db.models import F
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 
 from accounting.models import Card, CardBalance, Transactions
@@ -9,7 +9,6 @@ from accounting.models import Card, CardBalance, Transactions
 def create_balance(sender, instance, created, **kwargs):
     print(instance)
     if created:
-        print('create card')
         CardBalance.objects.create(
             card=instance,
             sum_cur=instance.beg_balance
@@ -17,8 +16,23 @@ def create_balance(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=Transactions)
-def change_balance(sender, instance, **kwargs):
-    print(instance.transaction_summ)
+def change_balance(sender, instance, created, **kwargs):
+    if created:
+        obj = CardBalance.objects.get(card=instance.card)
+        obj.sum_cur = F('sum_cur') + instance.transaction_summ
+        obj.save()
+
+
+@receiver(post_delete, sender=Transactions)
+def change_transaction(sender, instance, **kwargs):
+    print('delete')
     obj = CardBalance.objects.get(card=instance.card)
-    obj.sum_cur = F('sum_cur') + instance.transaction_summ
+    obj.sum_cur = F('sum_cur') - instance.transaction_summ
     obj.save()
+
+
+# @receiver(pre_save, sender=Transactions)
+# def update_transaction(sender,  instance, **kwargs):
+#
+#     print(kwargs)
+#     breakpoint()

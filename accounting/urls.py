@@ -2,7 +2,7 @@ from django.urls import path
 
 from accounting.views.categories_views import CategoryCreate, CategoryList, CategoryDetail
 from accounting.views.organization_views import OrganizationListCreate, OrganizationRUD
-from accounting.views.transaction_views import TransactionCreate
+from accounting.views.transaction_views import TransactionCreate, TransactionDelete, TransactionUpdate
 
 urlpatterns = [
     path('category/create/', CategoryCreate.as_view()),
@@ -12,6 +12,8 @@ urlpatterns = [
     path('organization/list-create/', OrganizationListCreate.as_view()),
     path('organization/rud/<int:org_id>', OrganizationRUD.as_view()),
 
-    path('transaction/create/', TransactionCreate.as_view())
+    path('transaction/create/', TransactionCreate.as_view()),
+    path('transaction/delete/<int:transaction_id>', TransactionDelete.as_view()),
+    path('transaction/update/<int:transaction_id>', TransactionUpdate.as_view())
 
 ]

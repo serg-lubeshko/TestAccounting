@@ -17,6 +17,13 @@ class TransactionCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         request = self.context.get("request")
+        try:
+            org = attrs['organization']
+            cat = attrs['category']
+        except KeyError:
+            if request.method == 'PATCH':
+                return attrs
+
         if Organization.objects.filter(organization_id=attrs['organization'].pk).filter(
                 user_id=request.user.pk).exists() and \
                 Category.objects.filter(category_id=attrs['category'].pk).filter(user_id=request.user.pk).exists():
@@ -27,7 +34,6 @@ class TransactionCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data: dict):
         user = self.context['user']
         operation_type = validated_data.get('operation_type', None)
-        print(operation_type, '!!!!')
         if operation_type == 2:
             validated_data['transaction_summ'] = validated_data['transaction_summ'] * (-1)
         return Transactions.objects.create(**validated_data | {'user': user})
