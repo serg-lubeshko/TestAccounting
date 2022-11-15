@@ -50,7 +50,7 @@ class Transactions(Common):
                                            decimal_places=2,
                                            verbose_name="Сумма транзакции",
                                            default=0)
-    categoty = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Категория")
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Категория")
     organization = models.ForeignKey(Organization, on_delete=models.PROTECT, verbose_name="Организация")
     info = models.CharField(max_length=500, verbose_name="Описание")
     operation_type = models.IntegerField(choices=OPERATION_TYPE,
@@ -63,4 +63,4 @@ class Transactions(Common):
         verbose_name_plural = 'Транзакции | Transactions'
 
     def __str__(self):
-        return self.transaction_id
+        return f"{self.category} - {self.transaction_summ}"
