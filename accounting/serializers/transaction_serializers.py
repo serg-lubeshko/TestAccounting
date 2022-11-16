@@ -49,3 +49,16 @@ class TransactionUpdateSerializer(TransactionCreateSerializer):
             'info',
             'operation_type',
         )
+
+
+class TransactionListSerializer(TransactionCreateSerializer):
+    class Meta:
+        model = Transactions
+        fields = (
+            'transaction_id',
+            'transaction_summ',
+            'category',
+            'organization',
+            'info',
+            'operation_type',
+        )

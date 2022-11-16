@@ -6,3 +6,7 @@ sqlparse==0.4.3
 tzdata==2022.6
 djangorestframework==3.14.0
 drf-yasg==1.21.4
+django-extensions==3.2.1
+ipython==8.6.0
+
+

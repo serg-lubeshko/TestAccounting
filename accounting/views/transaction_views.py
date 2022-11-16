@@ -6,7 +6,19 @@ from rest_framework.response import Response
 
 from accounting.models import Transactions, CardBalance
 from accounting.permission.permissions import IsAnAuthor
-from accounting.serializers.transaction_serializers import TransactionCreateSerializer, TransactionUpdateSerializer
+from accounting.serializers.transaction_serializers import TransactionCreateSerializer, TransactionUpdateSerializer, \
+    TransactionListSerializer
+
+
+class TransactionList(generics.ListAPIView):
+    """ Пользователь может  создавать свои транзакции """
+
+    serializer_class = TransactionListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Transactions.objects.filter(user=user)
+
 
 
 class TransactionCreate(generics.CreateAPIView):
@@ -31,11 +43,10 @@ class TransactionDelete(generics.DestroyAPIView):
 
 
 class TransactionUpdate(generics.RetrieveUpdateAPIView):
-    """ Пользователь может  удалять свои транзакции """
+    """ Пользователь может  редактировать свои транзакции """
 
     queryset = Transactions.objects.all()
     lookup_url_kwarg = 'transaction_id'
-    # TODO заменить serializer
     serializer_class = TransactionUpdateSerializer
     permission_classes = [IsAnAuthor]
 
@@ -48,13 +59,7 @@ class TransactionUpdate(generics.RetrieveUpdateAPIView):
             new_cur_bal = cur_balance_card-Decimal(cur_sum_trans)+Decimal(new_cur_sum)
             obj.sum_cur = new_cur_bal
             obj.save()
-
-            print(new_cur_sum, 'tututututu')
-        print(elem.initial_data, 'oooooooooo')
-        print(elem.__dict__)
         elem.save()
-        # inv_card_id = elm.pop("inv_card_id")
-        # InvCard.objects.filter(inv_card_id=inv_card_id).update(**elm)
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

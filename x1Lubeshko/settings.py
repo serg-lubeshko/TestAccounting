@@ -40,8 +40,13 @@ INSTALLED_APPS = [
     'accounting.apps.AccountingConfig',
     'rest_framework',
     'drf_yasg',
-    'users'
+    'users',
+    'django_extensions',
+
 ]
+
+SHELL_PLUS = "ipython"
+SHELL_PLUS_PRINT_SQL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,3 +143,13 @@ AUTH_USER_MODEL = 'users.MyUser'
 REPLY_TEXTS = {
     1: "Создано успешно"
 }
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tt1473909@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Z66669999'  # bdfybdfyjdbxbdfyjd
+EMAIL_HOST_PASSWORD = 'bdfybdfyjdbxbdfyjd'  # bdfybdfyjdbxbdfyjd
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True

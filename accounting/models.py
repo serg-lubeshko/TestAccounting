@@ -59,7 +59,7 @@ class Card(Common):
 
 class CardBalance(models.Model):
     card_balance_id = models.BigAutoField(primary_key=True, verbose_name="id")
-    card = models.OneToOneField(Card, on_delete=models.CASCADE)
+    card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='card')
     update_date = models.DateTimeField(verbose_name='Последние изменения', auto_now=True)
     sum_cur = models.DecimalField(max_digits=20,
                                   decimal_places=2,

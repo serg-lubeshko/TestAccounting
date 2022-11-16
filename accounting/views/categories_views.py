@@ -31,7 +31,7 @@ class CategoryCreate(generics.CreateAPIView):
 
 
 class CategoryList(generics.ListAPIView):
-    """ Пользователь может олучить список своих категорий """
+    """ Пользователь может получить список своих категорий """
 
     serializer_class = CategoryListSerializer
 
