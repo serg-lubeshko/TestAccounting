@@ -37,3 +37,15 @@ class TransactionCreateSerializer(serializers.ModelSerializer):
         if operation_type == 2:
             validated_data['transaction_summ'] = validated_data['transaction_summ'] * (-1)
         return Transactions.objects.create(**validated_data | {'user': user})
+
+
+class TransactionUpdateSerializer(TransactionCreateSerializer):
+    class Meta:
+        model = Transactions
+        fields = (
+            'transaction_summ',
+            'category',
+            'organization',
+            'info',
+            'operation_type',
+        )
