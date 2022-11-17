@@ -15,5 +15,4 @@ class Command(BaseCommand):
 
         if Category.objects.all().count() == 0:
             for item in сategory_data.categories:
-                Category.objects.create(**item)
-
+                Category.objects.create(**item | {'user_id': 1})
