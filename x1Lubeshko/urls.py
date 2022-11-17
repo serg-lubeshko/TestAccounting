@@ -5,6 +5,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from accounting.views.test_views import index
+
 schema_view = get_schema_view(
     openapi.Info(
         title="test",
@@ -17,6 +19,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', index),
     path('admin/', admin.site.urls),
     path('rest/v1/accounting/', include('accounting.urls'), name='accounting'),
     path('rest/v1/users/', include('users.urls'), name='users'),

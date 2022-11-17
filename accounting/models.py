@@ -92,6 +92,7 @@ class Transactions(Common):
                                          verbose_name='Тип операции',
                                          null=True)
     card = models.ForeignKey(Card, on_delete=models.PROTECT)
+    date_operation = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'transaction'

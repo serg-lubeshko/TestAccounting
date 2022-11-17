@@ -61,4 +61,5 @@ class TransactionListSerializer(TransactionCreateSerializer):
             'organization',
             'info',
             'operation_type',
+            'date_operation'
         )

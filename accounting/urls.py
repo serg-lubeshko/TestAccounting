@@ -1,6 +1,6 @@
 from django.urls import path
 
-from accounting.views.balance_views import BalanceList
+from accounting.views.balance_views import BalanceList, BalanceStat
 from accounting.views.categories_views import CategoryCreate, CategoryList, CategoryDetail
 from accounting.views.organization_views import OrganizationListCreate, OrganizationRUD
 from accounting.views.transaction_views import TransactionCreate, TransactionDelete, TransactionUpdate, TransactionList
@@ -18,6 +18,7 @@ urlpatterns = [
     path('transaction/delete/<int:transaction_id>', TransactionDelete.as_view()),
     path('transaction/update/<int:transaction_id>', TransactionUpdate.as_view()),
 
-    path('balance/list/', BalanceList.as_view())
+    path('balance/list/', BalanceList.as_view()),
+    path('balance/stat/', BalanceStat.as_view()),
 
 ]
