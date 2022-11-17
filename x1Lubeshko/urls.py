@@ -1,11 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth import login
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
-from accounting.views.test_views import index
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -13,13 +10,14 @@ schema_view = get_schema_view(
         default_version='v1',
         description="test_accounting",
 
+
+
     ),
     public=True,
     permission_classes=[permissions.AllowAny, ],
 )
 
 urlpatterns = [
-    path('', index),
     path('admin/', admin.site.urls),
     path('rest/v1/accounting/', include('accounting.urls'), name='accounting'),
     path('rest/v1/users/', include('users.urls'), name='users'),
