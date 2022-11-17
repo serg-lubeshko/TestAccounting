@@ -35,6 +35,8 @@ services:
       - postgresdb
     ports:
       - "8000:8000"
+  redis:
+    image: 'redis:alpine'
 #  nginx:
 #    build:
 #      context: ./docker/nginx
