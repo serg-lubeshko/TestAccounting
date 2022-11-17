@@ -1,53 +1,55 @@
-version: "3.10"
+version: "3"
 
 services:
-  web_itvpn_analys:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: web_itvpn_analys
-    restart: always
-    command: >
-      sh -c "python time.py
-      && python manage.py makemigrations
-      && python manage.py migrate
-      && python manage.py datavpn
-      && python manage.py runserver 0.0.0.0:8000
-      && python manage.py crontab add"
-#      && celery -A BACKVPN  beat -l INFO
-#      && celery -A BACKVPN  worker --loglevel=INFO --concurrency 1 -P solo
-
-
-    volumes:
-      - .:/app/
-    ports:
-      - "8000:8000"
-    environment:
-      - SQL_HOST=db
-      - SQL_USER=postgres
-      - SQL_NAME=x1
-      - POSTGRES_PASSWORD=1111
-    depends_on:
-      - db
-  db:
-    restart: always
+  postgresdb:
     build:
       context: ./docker/postgres
       dockerfile: Dockerfile
     environment:
-      - POSTGRES_PASSWORD=1111
-    image: postgres:latest
+      - POSTGRES_PASSWORD=2278
     volumes:
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres_data:/var/lib/postgresql/data/
+    #      - ./postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
-    container_name: vpn_analys_db
+  web_it:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: web
+    command: >
+      sh -c "python time.py
+      && python manage.py makemigrations 
+      && python manage.py migrate 
+      && python manage.py datapp 
+      && python manage.py runserver 0.0.0.0:8000 "
 
-  redis:
-    image: redis:alpine
+    volumes:
+      - ./:/usr/src/app
+    environment:
+      - SQL_HOST=postgresdb
+      - SQL_USER=postgres
+      - SQL_NAME=acountdb
+      - POSTGRES_PASSWORD=2278
     depends_on:
-      - db
-
+      - postgresdb
+    ports:
+      - "8000:8000"
+#  nginx:
+#    build:
+#      context: ./docker/nginx
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - web_it
+#      - postgresdb
+#    ports:
+#      - "80:80"
+#
+#    volumes:
+#      - ./static/:/static
 volumes:
   postgres_data:
+
+
+
+

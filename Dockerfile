@@ -1,24 +1,22 @@
-FROM python:3.10.0
+FROM python:3.10
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN rm -rf /var/lib/apt/lists/*
-RUN apt-get clean
-RUN apt-get update -o Acquire::CompressionTypes::Order::=gz
-
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-    build-essential
-RUN apt-get install -y cron
-
+#RUN apt-get update \
+# && apt-get install -y --no-install-recommends \
+#    build-essential
 
 RUN pip install --upgrade pip
 
-COPY requirements.txt .
+ADD requirements.txt /usr/src/app
+RUN pip install -r requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY entrypoint.sh /usr/src/app
+RUN chmod +x entrypoint.sh
 
-COPY . .
+COPY . /usr/src/app
+#ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+
