@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from accounting.management.data.сategory_data import categories
 from accounting.models import Category
@@ -32,3 +33,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
             list_categ_default.append(ctegory_default)
         Category.objects.bulk_create(list_categ_default)
         return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username
+        return token

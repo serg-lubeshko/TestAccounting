@@ -5,7 +5,14 @@ from rest_framework.views import APIView
 
 from accounting.models import Card, Transactions
 from accounting.serializers.balance_serializers import BalanceStatSerializer
-from accounting.serializers.card_serializers import BalanceListSerializer
+from accounting.serializers.card_serializers import BalanceListSerializer, BalanceCreateSerializer
+from accounting.serializers.com_view import CommonCreate
+
+
+class BalanceCreate(CommonCreate):
+    """ Пользователь может создать баланса и карту"""
+
+    serializer_class = BalanceCreateSerializer
 
 
 class BalanceList(generics.ListAPIView):
@@ -14,19 +21,17 @@ class BalanceList(generics.ListAPIView):
     serializer_class = BalanceListSerializer
 
     def get_queryset(self):
-        user = self.request.user
+        user = self.request.user.pk
         return Card.objects.filter(user=user).select_related('card')
 
 
-class BalanceStat(APIView):
-
-    def get(self, request):
-        data = Transactions.objects.values('user__username', 'user__email').annotate(
-            sum_income=Sum('transaction_summ', filter=Q(transaction_summ__gt=0), default=0),
-            sum_consumption=Sum('transaction_summ', filter=Q(transaction_summ__lte=0), default=0)
-        ).filter()
-        serializer = BalanceStatSerializer(data, many=True)
-        stat = serializer.data
-        return Response(serializer.data)
-
-    # def sen
+# class BalanceStat(APIView):
+#
+#     def get(self, request):
+#         data = Transactions.objects.values('user__username', 'user__email').annotate(
+#             sum_income=Sum('transaction_summ', filter=Q(transaction_summ__gt=0), default=0),
+#             sum_consumption=Sum('transaction_summ', filter=Q(transaction_summ__lte=0), default=0)
+#         ).filter()
+#         serializer = BalanceStatSerializer(data, many=True)
+#         stat = serializer.data
+#         return Response(serializer.data)

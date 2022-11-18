@@ -3,22 +3,15 @@ from rest_framework import serializers
 from accounting.models import Category
 
 
-class CategoryCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = (
-            'category_name',
-            'update_date'
-        )
+class CategorySerializer(serializers.ModelSerializer):
+    category_id = serializers.IntegerField(read_only=True)
 
-
-class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = (
             'category_id',
             'category_name',
-            'update_date',
+            'update_date'
         )
 
 

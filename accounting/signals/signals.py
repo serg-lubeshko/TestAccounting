@@ -1,5 +1,5 @@
 from django.db.models import F
-from django.db.models.signals import post_save, post_delete, pre_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
 from accounting.models import Card, CardBalance, Transactions
@@ -29,10 +29,3 @@ def change_transaction(sender, instance, **kwargs):
     obj = CardBalance.objects.get(card=instance.card)
     obj.sum_cur = F('sum_cur') - instance.transaction_summ
     obj.save()
-
-
-# @receiver(pre_save, sender=Transactions)
-# def update_transaction(sender,  instance, **kwargs):
-#
-#     print(kwargs)
-#     breakpoint()

@@ -1,3 +1,4 @@
+from copy import deepcopy
 from decimal import Decimal
 
 from django.db.models import F
@@ -18,7 +19,6 @@ class TransactionList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Transactions.objects.filter(user=user)
-
 
 
 class TransactionCreate(generics.CreateAPIView):
@@ -51,15 +51,22 @@ class TransactionUpdate(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAnAuthor]
 
     def _perform_update(self, elem):
+        transaction_update = elem
         if new_cur_sum := elem.initial_data.get('transaction_summ', None):
-            id_card = elem.instance.card_id
+            # id_card = elem.instance.card_id
             cur_sum_trans = elem.instance.transaction_summ
-            obj = CardBalance.objects.get(card=id_card)
-            cur_balance_card = obj.sum_cur
-            new_cur_bal = cur_balance_card-Decimal(cur_sum_trans)+Decimal(new_cur_sum)
-            obj.sum_cur = new_cur_bal
-            obj.save()
-        elem.save()
+            obj_card = elem.instance.card
+            obj_card_balancce = obj_card.card
+            cur_balance_card = obj_card_balancce.sum_cur
+            new_cur_bal = cur_balance_card - Decimal(cur_sum_trans) + Decimal(new_cur_sum)
+            obj_card_balancce.sum_cur = new_cur_bal
+            obj_card_balancce.save()
+            transaction_summ_clarify = Decimal(cur_sum_trans) * (-1) if elem.initial_data[
+                                                                            'operation_type'] == 2 else new_cur_sum
+            elem.initial_data['transaction_summ'] = transaction_summ_clarify
+            transaction_update = elem
+        print(transaction_update.initial_data)
+        transaction_update.save()
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
