@@ -11,6 +11,8 @@ ipython==8.6.0
 celery==5.2.7
 djangorestframework-simplejwt==5.2.2
 drf_spectacular == 0.24.2
+APScheduler==3.9.1.post1
+
 
 
 
