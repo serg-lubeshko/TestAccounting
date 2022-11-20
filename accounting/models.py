@@ -99,5 +99,12 @@ class Transactions(Common):
         verbose_name = 'Транзакция | Transactions'
         verbose_name_plural = 'Транзакции | Transactions'
 
+    def save(self, *args, **kwargs):
+        if self.operation_type == 2:
+            self.transaction_summ = self.transaction_summ * (-1)
+        else:
+            self.transaction_summ = self.transaction_summ
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.category} - {self.transaction_summ}"
