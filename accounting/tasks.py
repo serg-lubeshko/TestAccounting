@@ -25,3 +25,8 @@ def send_notification():
         return None
     except Exception as e:
         print(e)
+
+
+@app.task(name="send_notification2")
+def send_notification2():
+    print(datetime.utcnow())
