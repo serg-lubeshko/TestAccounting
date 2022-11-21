@@ -35,6 +35,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = (
+            'id',
+            'email',
+            'username')
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

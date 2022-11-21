@@ -152,14 +152,14 @@ REPLY_TEXTS = {
     1: "Создано успешно"
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'tt1473909@gmail.com'
-# EMAIL_HOST_PASSWORD = 'Z66669999'  # bdfybdfyjdbxbdfyjd
-EMAIL_HOST_PASSWORD = 'bdfybdfyjdbxbdfyjd'  # bdfybdfyjdbxbdfyjd
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = True
+# # EMAIL_HOST_PASSWORD = 'Z66669999'  # bdfybdfyjdbxbdfyjd
+# EMAIL_HOST_PASSWORD = 'bdfybdfyjdbxbdfyjd'  # bdfybdfyjdbxbdfyjd
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = True
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
@@ -205,3 +205,5 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=2),
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -24,8 +24,8 @@ app.autodiscover_tasks()
 #     }
 # }
 app.conf.beat_schedule = {
-    'add-day': {
-        'task': 'send_notification2',
+    'send-report-every-single-minute': {
+        'task': 'send_notification',
         'schedule': crontab(minute="*/2")
     }
 }
