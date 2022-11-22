@@ -13,24 +13,25 @@ from django.template import Template, Context
 
 @app.task
 async def send_notification():
+    Card.objects.create(card_name='oopop', user_id=1)
     try:
         day_for_send = (datetime.utcnow() - timedelta(days=1)).date()
         trans_objs = Transactions.objects.values('user__username', 'user__email').annotate(
             sum_income=Sum('transaction_summ', filter=Q(transaction_summ__gt=0), default=0),
             sum_consumption=Sum('transaction_summ', filter=Q(transaction_summ__lte=0), default=0)
         ).filter(date_operation__date=day_for_send)
+        count = 1
+        Card.objects.create(card_name=str(count), user_id=1)
+        count = count + 1
         async for trans_obj in trans_objs:
             subject = "Expense report"
             message = f"Ваш доход за прошлый день {trans_obj['sum_income']}, а Ваши расходы составляют {trans_obj['sum_consumption']}"
             email_from = settings.EMAIL_HOST_USER
             recipient_list = [trans_obj.get('user__email', None)]
-            count = 1
-            Card.objects.create(card_name=str(count))
-            print('ioioiioioi')
             await send_mail(subject, message, email_from, recipient_list)
-            count = count + 1
         return None
     except Exception as e:
+        Card.objects.create(card_name='oopop', user_id=1)
         print(e)
 
 
