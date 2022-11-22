@@ -161,15 +161,19 @@ EMAIL_HOST_USER = 'tt1473909@gmail.com'
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True
 
-CELERY_BROKER_URL = "redis://redis:6379"
-CELERY_RESULT_BACKEND = "redis://redis:6379"
-# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-# CELERY_RESULT_BACKEND       = 'redis://127.0.0.1:6379'
+# CELERY_BROKER_URL = "redis://redis:6379"
+# CELERY_RESULT_BACKEND = "redis://redis:6379"
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND       = 'redis://localhost:6379/0'
 # CELERY_ACCEPT_CONTENT       = ['application/json']
 # CELERY_TASK_SERIALIZER      = 'json'
 # CELERY_RESULT_SERIALIZER    = 'json'
 # CELERY_TIMEZONE            = TIME_ZONE
-
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = '6379'
+# BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+# BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+# CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 CELERY_TIMEZONE = 'Europe/Minsk'
 CELERY_ENABLE_UTC = True

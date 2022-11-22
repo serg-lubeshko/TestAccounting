@@ -1,5 +1,5 @@
 CREATE USER admin WITH PASSWORD '2278';
 
-CREATE DATABASE acountdb;
-GRANT ALL PRIVILEGES ON DATABASE acountdb TO postgres;
+CREATE DATABASE test_accounting;
+GRANT ALL PRIVILEGES ON DATABASE test_accounting TO postgres;
 

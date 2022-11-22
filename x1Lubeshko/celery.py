@@ -25,7 +25,7 @@ app.autodiscover_tasks()
 # }
 app.conf.beat_schedule = {
     'send-report-every-single-minute': {
-        'task': 'send_notification',
-        'schedule': crontab(minute="*/2")
+        'task': 'x1Lubeshko.tasks.send_notification',
+        'schedule': crontab()
     }
 }

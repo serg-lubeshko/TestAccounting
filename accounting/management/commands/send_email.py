@@ -3,8 +3,7 @@ from apscheduler.schedulers.background import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
 
-
-from accounting.tasks import send_notification
+from x1Lubeshko.tasks import send_notification
 
 
 class Command(BaseCommand):

@@ -22,15 +22,15 @@ services:
       && python manage.py makemigrations 
       && python manage.py migrate 
       && python manage.py datapp 
-      && python manage.py runserver 0.0.0.0:800
-      &&  celery -A x1Lubeshko beat"
+      && python manage.py runserver 0.0.0.0:8000
+      && celery -A x1Lubeshko beat -l info"
 
     volumes:
       - ./:/usr/src/app
     environment:
       - SQL_HOST=postgresdb
       - SQL_USER=postgres
-      - SQL_NAME=acountdb
+      - SQL_NAME=test_accounting
       - POSTGRES_PASSWORD=2278
     depends_on:
       - postgresdb
@@ -40,19 +40,9 @@ services:
     image: 'redis:alpine'
     ports:
       - "6379:6379"
-
-#  nginx:
-#    build:
-#      context: ./docker/nginx
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - web_it
-#      - postgresdb
-#    ports:
-#      - "80:80"
-#
-#    volumes:
-#      - ./static/:/static
+    depends_on:
+      - postgresdb
+      - web_it
 volumes:
   postgres_data:
 

@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import MyUser
 from users.serializers.users_serializers import MyTokenObtainPairSerializer
+from x1Lubeshko.settings import SIMPLE_JWT
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -22,6 +23,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
         data['username'] = obj.username
         data['id'] = obj.id
         res = Response(data=data, status=status.HTTP_200_OK)
-        res.set_cookie('pofig', data)
+        res = Response(data=data, status=status.HTTP_200_OK)
+        res.set_cookie('refresh', data.get('refresh', None), max_age=SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'])
+        res.set_cookie('access', data.get('access', None), max_age=SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'])
+        res.set_cookie('username', data.get('username', None))
+        res.set_cookie('id', data.get('id', None))
         return res
 
