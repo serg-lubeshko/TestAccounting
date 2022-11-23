@@ -36,16 +36,33 @@ services:
       - postgresdb
     ports:
       - "8000:8000"
+#  redis:
+#    image: 'redis:alpine'
+#    command: redis-server start
+#    ports:
+#      - "6379:6379"
+#    depends_on:
+#      - postgresdb
+#      - web_it
+#volumes:
+#  postgres_data:
   redis:
-    image: 'redis:alpine'
-    ports:
-      - "6379:6379"
+    image: redis:alpine
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A x1Lubeshko worker -l info
+    environment:
+      - SQL_HOST=postgresdb
+      - SQL_USER=postgres
+      - SQL_NAME=test_accounting
+      - POSTGRES_PASSWORD=2278
     depends_on:
       - postgresdb
+      - redis
       - web_it
 volumes:
   postgres_data:
-
-
 
 

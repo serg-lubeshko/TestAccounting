@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
+import redis
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -154,21 +156,20 @@ REPLY_TEXTS = {
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'tt1473909@gmail.com'
-# # EMAIL_HOST_PASSWORD = 'Z66669999'  # bdfybdfyjdbxbdfyjd
+# EMAIL_HOST_USER = 'tt1473909@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Z66669999'  # bdfybdfyjdbxbdfyjd
 # EMAIL_HOST_PASSWORD = 'bdfybdfyjdbxbdfyjd'  # bdfybdfyjdbxbdfyjd
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True
-
-# CELERY_BROKER_URL = "redis://redis:6379"
-# CELERY_RESULT_BACKEND = "redis://redis:6379"
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND       = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT       = ['application/json']
-# CELERY_TASK_SERIALIZER      = 'json'
-# CELERY_RESULT_SERIALIZER    = 'json'
-# CELERY_TIMEZONE            = TIME_ZONE
+CELERY_BROKER_URL = "redis://redis:6379/"
+CELERY_RESULT_BACKEND = "redis://redis:6379/"
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'
+# CELERY_RESULT_BACKEND       = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT       = ['application/json']
+CELERY_TASK_SERIALIZER      = 'json'
+CELERY_RESULT_SERIALIZER    = 'json'
+CELERY_TIMEZONE            = TIME_ZONE
 # REDIS_HOST = 'localhost'
 # REDIS_PORT = '6379'
 # BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
@@ -211,3 +212,15 @@ SIMPLE_JWT = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DRAMATIQ_RESULT_BACKEND = {
+    "BACKEND": "dramatiq.results.backends.redis.RedisBackend",
+    "BACKEND_OPTIONS": {
+        "url": "redis://localhost:6379",
+    },
+    "MIDDLEWARE_OPTIONS": {
+        "result_ttl": 60000
+    }
+}
+DRAMATIQ_TASKS_DATABASE = "default"
+
