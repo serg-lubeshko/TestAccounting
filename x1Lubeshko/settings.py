@@ -162,14 +162,14 @@ REPLY_TEXTS = {
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = True
-CELERY_BROKER_URL = "redis://redis:6379/"
-CELERY_RESULT_BACKEND = "redis://redis:6379/"
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND       = 'redis://localhost:6379/0'
+# CELERY_BROKER_URL = "redis://0.0.0.0:6379/0"
+# CELERY_RESULT_BACKEND = "redis://0.0.0.0:6379/0"
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND       = 'redis://localhost:6379/0'
 CELERY_ACCEPT_CONTENT       = ['application/json']
 CELERY_TASK_SERIALIZER      = 'json'
 CELERY_RESULT_SERIALIZER    = 'json'
-CELERY_TIMEZONE            = TIME_ZONE
+
 # REDIS_HOST = 'localhost'
 # REDIS_PORT = '6379'
 # BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
@@ -211,16 +211,16 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=2),
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-DRAMATIQ_RESULT_BACKEND = {
-    "BACKEND": "dramatiq.results.backends.redis.RedisBackend",
-    "BACKEND_OPTIONS": {
-        "url": "redis://localhost:6379",
-    },
-    "MIDDLEWARE_OPTIONS": {
-        "result_ttl": 60000
-    }
-}
-DRAMATIQ_TASKS_DATABASE = "default"
+# DRAMATIQ_RESULT_BACKEND = {
+#     "BACKEND": "dramatiq.results.backends.redis.RedisBackend",
+#     "BACKEND_OPTIONS": {
+#         "url": "redis://0.0.0.0:6379",
+#     },
+#     "MIDDLEWARE_OPTIONS": {
+#         "result_ttl": 60000
+#     }
+# }
+# DRAMATIQ_TASKS_DATABASE = "default"
 

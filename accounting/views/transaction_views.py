@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -81,8 +79,6 @@ class TransactionDelete(generics.DestroyAPIView):
 
     queryset = Transactions.objects.all()
     lookup_url_kwarg = 'transaction_id'
-    # TODO заменить serializer
-    # serializer_class = TransactionCreateSerializer
     permission_classes = [IsAnAuthor]
 
 
@@ -94,26 +90,13 @@ class TransactionUpdate(generics.RetrieveUpdateAPIView):
     serializer_class = TransactionUpdateSerializer
     permission_classes = [IsAnAuthor]
 
-    def _perform_update(self, transaction_elem):
-        oper_type = transaction_elem.initial_data.get('operation_type', transaction_elem.instance.operation_type)
-        Koef = 1 if oper_type == 1 else -1
-        if new_cur_sum := transaction_elem.initial_data.get('transaction_summ', None):
-            cur_sum_trans = transaction_elem.instance.transaction_summ
-            obj_card = transaction_elem.instance.card
-            obj_balance = obj_card.card
-            cur_balance_card = obj_balance.sum_cur
-            new_cur_bal = cur_balance_card - Decimal(cur_sum_trans) + Decimal(new_cur_sum) * Koef
-            obj_balance.sum_cur = new_cur_bal
-            obj_balance.save()
-        return transaction_elem.save()
-
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
 
         if serializer.is_valid():
-            self._perform_update(serializer)
+            self.perform_update(serializer)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({
             "fieldErrors": serializer.errors

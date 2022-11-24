@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from accounting.models import Card
+from accounting.models import Card, Transactions
 
 
 class BalanceCreateSerializer(serializers.ModelSerializer):
@@ -13,13 +13,15 @@ class BalanceCreateSerializer(serializers.ModelSerializer):
 
 
 class BalanceListSerializer(serializers.ModelSerializer):
-    cur_balance = serializers.CharField(source='card.sum_cur')
+    card_name = serializers.CharField(source='card__card_name')
+    card_beg_balance = serializers.CharField(source='card__beg_balance')
+    cur_balance = serializers.CharField()
 
     class Meta:
-        model = Card
+        model = Transactions
         fields = (
             'card_id',
             'card_name',
-            'beg_balance',
+            'card_beg_balance',
             'cur_balance',
         )

@@ -1,10 +1,7 @@
-from django.db.models import Sum, Q
+from django.db.models import Sum, F
 from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
-from accounting.models import Card, Transactions
-from accounting.serializers.balance_serializers import BalanceStatSerializer
+from accounting.models import Transactions
 from accounting.serializers.card_serializers import BalanceListSerializer, BalanceCreateSerializer
 from accounting.serializers.com_view import CommonCreate
 
@@ -22,7 +19,15 @@ class BalanceList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user.pk
-        return Card.objects.filter(user=user).select_related('card')
+        return (
+            Transactions.objects.values(
+                'card',
+                'card__card_name',
+                'card__beg_balance',
+            ).annotate(sum_tr=Sum('transaction_summ')).filter(user=user)). \
+            annotate(
+                cur_balance=F('card__beg_balance') + F('sum_tr')
+        )
 
 
 # class BalanceStat(APIView):

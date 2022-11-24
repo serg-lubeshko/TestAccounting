@@ -57,22 +57,22 @@ class Card(Common):
         return self.card_name
 
 
-class CardBalance(models.Model):
-    card_balance_id = models.BigAutoField(primary_key=True, verbose_name="id")
-    card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='card')
-    update_date = models.DateTimeField(verbose_name='Последние изменения', auto_now=True)
-    sum_cur = models.DecimalField(max_digits=20,
-                                  decimal_places=2,
-                                  verbose_name="Текущий баланс",
-                                  default=0)
-
-    class Meta:
-        db_table = 'card_balance'
-        verbose_name = 'Баланс | CardBalance'
-        verbose_name_plural = 'Балансы | CardBalance'
-
-    def __str__(self):
-        return self.card
+# class CardBalance(models.Model):
+#     card_balance_id = models.BigAutoField(primary_key=True, verbose_name="id")
+#     card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='card')
+#     update_date = models.DateTimeField(verbose_name='Последние изменения', auto_now=True)
+#     sum_cur = models.DecimalField(max_digits=20,
+#                                   decimal_places=2,
+#                                   verbose_name="Текущий баланс",
+#                                   default=0)
+#
+#     class Meta:
+#         db_table = 'card_balance'
+#         verbose_name = 'Баланс | CardBalance'
+#         verbose_name_plural = 'Балансы | CardBalance'
+#
+#     def __str__(self):
+#         return self.card
 
 
 class Transactions(Common):
@@ -103,7 +103,7 @@ class Transactions(Common):
         if self.operation_type == 2:
             self.transaction_summ = self.transaction_summ * (-1)
         else:
-            self.transaction_summ = self.transaction_summ
+            self.transaction_summ = abs(self.transaction_summ)
         return super().save(*args, **kwargs)
 
     def __str__(self):

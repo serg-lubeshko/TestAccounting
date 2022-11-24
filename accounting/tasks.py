@@ -1,7 +1,9 @@
+import asyncio
 import json
 from datetime import datetime, timedelta
 import dramatiq
 import os, django
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "x1Lubeshko.settings")
 django.setup()
 from celery import shared_task
@@ -30,8 +32,7 @@ from django.template import Template, Context
 #     send_mail(subject, message, email_from, recipient_list)
 
 
-
-    # print(datetime.now())
+# print(datetime.now())
 
 
 # Card.objects.create(card_name='oopop', user_id=1)
@@ -74,9 +75,14 @@ from django.core.mail import BadHeaderError
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-@app.task
-def send_mail():
 
+# @dramatiq.actor
+async def send_mail_user(i):
+    day_for_send = (datetime.utcnow() - timedelta(days=1)).date()
+    querysets = Transactions.objects.values('user__username', 'user__email').annotate(
+        sum_income=Sum('transaction_summ', filter=Q(transaction_summ__gt=0), default=0),
+        sum_consumption=Sum('transaction_summ', filter=Q(transaction_summ__lte=0), default=0)
+    ).filter(date_operation__date=day_for_send)
     port = "587"
     smtp_server = "smtp.gmail.com"
     sender_email = "ittascompany2022@gmail.com"
@@ -89,12 +95,11 @@ def send_mail():
     msg['Reply-To'] = sender_email
     msg['Return-Path'] = sender_email
 
-
     # html = MIMEText(msg_html, 'html')
     # msg.attach(html)
 
     try:
-        users_mail=['sergei_777@tut.by']
+        users_mail = ['sergei_777@tut.by']
         port = 587
         mail = smtplib.SMTP(smtp_server, port)
         context = ssl.create_default_context()
@@ -103,11 +108,22 @@ def send_mail():
         mail.ehlo()
         mail.login(sender_email, password)
         mail.sendmail(sender_email, users_mail, msg.as_string())
-        # mail.sendmail(sender_email,receiver_email, message)
-        mail.quit()
+        # mail.quit()
+        return True
     except (BadHeaderError, smtplib.SMTPAuthenticationError):
-        return HttpResponse('Обнаружен недопустимый заголовок!')
+        return False
     # return redirect('password_reset_done')
 
-# if __name__ == '__main__':
-#     send_mail()
+
+if __name__ == '__main__':
+    send_mail_user()
+
+from async_sender import Mail
+import asyncio
+def kk():
+    loop = asyncio.get_event_loop()
+
+    mail = Mail()
+
+    loop.run_until_complete(mail.send_message("Hello", from_address="from@example.com",
+                      to="to@example.com", body="Hello world!"))

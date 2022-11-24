@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from accounting.models import Transactions, Card, CardBalance, Organization
+from accounting.models import Transactions, Card, Organization
 
 
 @admin.register(Transactions)
@@ -25,17 +25,6 @@ class CardAdmin(admin.ModelAdmin):
         'user',
         'update_date'
     )
-
-@admin.register(CardBalance)
-class CardBalanceAdmin(admin.ModelAdmin):
-    list_display = (
-        'card_balance_id',
-        'card',
-        'update_date',
-        'sum_cur',
-
-    )
-
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
