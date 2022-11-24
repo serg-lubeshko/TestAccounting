@@ -32,11 +32,10 @@ SPECTACULAR_SETTINGS = {
 urlpatterns = [
     path('b-login/', MyTokenObtainPairView.as_view()),
     path('token/refresh/', TokenRefreshView.as_view()),
-    # path('logout/', user_logout, name='logout'),
     path('admin/', admin.site.urls),
     path('rest/v1/accounting/', include('accounting.urls'), name='accounting'),
-    # path('rest/v1/users/', include('users.urls'), name='users'),
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
 
     path('a-user/', include('users.urls')),

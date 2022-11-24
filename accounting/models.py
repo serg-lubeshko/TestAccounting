@@ -15,9 +15,6 @@ class Category(Common):
     category_id = models.BigAutoField(primary_key=True, verbose_name="id")
     category_name = models.CharField(max_length=255, verbose_name="Название категории")
 
-    # code = models.ForeignKey(Code, on_delete=models.PROTECT, verbose_name="Шифр товара")
-    # category_parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, blank=True, null=True)
-
     class Meta:
         db_table = 'сategory'
         verbose_name = 'Категория | Category'
@@ -57,24 +54,6 @@ class Card(Common):
         return self.card_name
 
 
-# class CardBalance(models.Model):
-#     card_balance_id = models.BigAutoField(primary_key=True, verbose_name="id")
-#     card = models.OneToOneField(Card, on_delete=models.CASCADE, related_name='card')
-#     update_date = models.DateTimeField(verbose_name='Последние изменения', auto_now=True)
-#     sum_cur = models.DecimalField(max_digits=20,
-#                                   decimal_places=2,
-#                                   verbose_name="Текущий баланс",
-#                                   default=0)
-#
-#     class Meta:
-#         db_table = 'card_balance'
-#         verbose_name = 'Баланс | CardBalance'
-#         verbose_name_plural = 'Балансы | CardBalance'
-#
-#     def __str__(self):
-#         return self.card
-
-
 class Transactions(Common):
     OPERATION_TYPE = [
         (1, 'Доход'),
@@ -91,7 +70,7 @@ class Transactions(Common):
     operation_type = models.IntegerField(choices=OPERATION_TYPE,
                                          verbose_name='Тип операции',
                                          null=True)
-    card = models.ForeignKey(Card, on_delete=models.PROTECT)
+    card = models.ForeignKey(Card, on_delete=models.PROTECT, related_name='card')
     date_operation = models.DateTimeField(auto_now_add=True)
 
     class Meta:

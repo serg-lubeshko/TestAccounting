@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from x1Lubeshko.settings import SIMPLE_JWT
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

@@ -33,13 +33,6 @@ class CustomOrderFilter(OrderingFilter):
                                 queryset = queryset.filter(Q(**{search_field: value}))
                         except:
                             queryset = queryset.filter(**filter_query)
-
-                    # for ke, v in filter_query.items():
-                    #     print(ke, v, queryset.filter())
-                    #     queryset=queryset.filter(reduce(operator.and_,
-                    #                                     (Q(full_name__icontains=x) for x in ['441', 'на'])
-                    #                                     )
-                    #                              )
         except (TypeError, ValueError):
             return queryset
         return queryset

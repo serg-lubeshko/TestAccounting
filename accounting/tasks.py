@@ -118,12 +118,12 @@ async def send_mail_user(i):
 if __name__ == '__main__':
     send_mail_user()
 
-from async_sender import Mail
-import asyncio
-def kk():
-    loop = asyncio.get_event_loop()
-
-    mail = Mail()
-
-    loop.run_until_complete(mail.send_message("Hello", from_address="from@example.com",
-                      to="to@example.com", body="Hello world!"))
+# from async_sender import Mail
+# import asyncio
+# def kk():
+#     loop = asyncio.get_event_loop()
+#
+#     mail = Mail()
+#
+#     loop.run_until_complete(mail.send_message("Hello", from_address="from@example.com",
+#                       to="to@example.com", body="Hello world!"))
