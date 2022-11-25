@@ -7,6 +7,8 @@ from accounting.serializers.organization_serializers import OrganizationSerializ
 
 
 class OrganizationListCreate(generics.ListCreateAPIView):
+    """ User can create organizations """
+
     serializer_class = OrganizationSerializer
 
     def get_serializer_context(self):

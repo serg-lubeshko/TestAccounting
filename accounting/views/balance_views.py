@@ -10,13 +10,13 @@ from accounting.serializers.com_view import CommonCreate
 
 
 class BalanceCreate(CommonCreate):
-    """ Пользователь может создать баланса и карту"""
+    """ User can create balance and card """
 
     serializer_class = BalanceCreateSerializer
 
 
 class BalanceList(generics.ListAPIView):
-    """ Пользователь может получить список баланса по картам """
+    """ User can get list of card balances """
 
     serializer_class = BalanceListSerializer2
 

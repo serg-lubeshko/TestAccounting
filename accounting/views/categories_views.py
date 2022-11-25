@@ -8,13 +8,13 @@ from accounting.serializers.com_view import CommonCreate
 
 
 class CategoryCreate(CommonCreate):
-    """ Пользователь может  создавать свои категории """
+    """ User can create their own categories """
 
     serializer_class = CategorySerializer
 
 
 class CategoryList(generics.ListAPIView):
-    """ Пользователь может получить список своих категорий """
+    """ User can get a list of their categories """
 
     serializer_class = CategorySerializer
 
@@ -28,7 +28,7 @@ class CategoryList(generics.ListAPIView):
 
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
-    """ Пользователь может изменять/удалять категории """
+    """ User can change/delete categories """
 
     permission_classes = [IsAnAuthor]
     queryset = Category.objects.all()
