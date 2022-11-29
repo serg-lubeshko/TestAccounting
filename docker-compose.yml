@@ -23,7 +23,8 @@ services:
       && python manage.py migrate 
       && python manage.py datapp 
       && python manage.py runserver 0.0.0.0:8000
-      && celery -A x1Lubeshko beat -l info"
+      && python manage.py send_email"
+#      && celery -A x1Lubeshko beat -l info"
 
     volumes:
       - ./:/usr/src/app
@@ -46,22 +47,22 @@ services:
 #      - web_it
 #volumes:
 #  postgres_data:
-  redis:
-    image: redis:alpine
-  celery:
-    restart: always
-    build:
-      context: .
-    command: celery -A x1Lubeshko worker -l info
-    environment:
-      - SQL_HOST=postgresdb
-      - SQL_USER=postgres
-      - SQL_NAME=test_accounting
-      - POSTGRES_PASSWORD=2278
-    depends_on:
-      - postgresdb
-      - redis
-      - web_it
+#  redis:
+#    image: redis:alpine
+#  celery:
+#    restart: always
+#    build:
+#      context: .
+#    command: celery -A x1Lubeshko worker -l info
+#    environment:
+#      - SQL_HOST=postgresdb
+#      - SQL_USER=postgres
+#      - SQL_NAME=test_accounting
+#      - POSTGRES_PASSWORD=2278
+#    depends_on:
+#      - postgresdb
+#      - redis
+#      - web_it
 volumes:
   postgres_data:
 

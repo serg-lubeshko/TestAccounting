@@ -37,7 +37,7 @@ class Command(BaseCommand):
         scheduler = BlockingScheduler(timezone=pytz.UTC)
         scheduler.add_job(
             main_func_send,
-            'cron', day_of_week='mon-sun', hour='20', minute='00',
+            'cron', day_of_week='mon-sun', hour='08', minute='00',
         )
         self.stdout.write(self.style.NOTICE('Start scheduler. Letters will be sent at 08 am'))
         scheduler.start()
