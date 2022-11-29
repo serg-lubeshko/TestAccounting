@@ -30,6 +30,7 @@ class TransactionUpdateSerializer(serializers.ModelSerializer):
 
 
 class TransactionCreateSerializer(TransactionUpdateSerializer):
+    transaction_summ = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=0)
     class Meta:
         model = Transactions
         fields = (

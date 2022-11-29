@@ -6,7 +6,7 @@ from users.models import MyUser
 
 
 class Command(BaseCommand):
-    """ Класс для загрузки основных параметров проекта в БД """
+    """ Class for loading the main project parameters into the database """
 
     def handle(self, *args, **options):
         if MyUser.objects.all().count() == 0:

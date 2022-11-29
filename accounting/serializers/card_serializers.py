@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django.db.models import Sum
 from rest_framework import serializers
 
@@ -47,8 +45,7 @@ class BalanceListSerializer2(serializers.ModelSerializer):
         try:
             sum_trans = (Transactions.objects.values('card').annotate(
                 sum_tr=Sum('transaction_summ', default=0)
-            ) \
-                         .filter(card=card))[0]
+            ).filter(card=card))[0]
             return sum_trans
         except IndexError:
             return {'sum_tr': 0}
